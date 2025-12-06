@@ -39,3 +39,4 @@ Ejemplo de un primer programa en LISP y su ejecución:
 
 ![Remarcador de Sintaxis de LISP](./Imagenes/LISP_02.jpg "LISP Hola Mundo")
 
+Listo ya esta preparado para comenzar a aprender LISP
