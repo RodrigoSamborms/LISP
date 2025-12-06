@@ -30,3 +30,12 @@ Para salir del editor de LISP use alguno de los siguientes comandos:
 (exit)
 (quit)
 ```
+
+Instale una extensión para el editor de VS Code, esto ayuda a visualizar mejor el código
+
+![Remarcador de Sintaxis de LISP](./Imagenes/LISP_01.jpg "LISP extesion VSCode")
+
+Ejemplo de un primer programa en LISP y su ejecución:
+
+![Remarcador de Sintaxis de LISP](./Imagenes/LISP_02.jpg "LISP Hola Mundo")
+
