@@ -40,3 +40,10 @@ Ejemplo de un primer programa en LISP y su ejecución:
 ![Remarcador de Sintaxis de LISP](./Imagenes/LISP_02.jpg "LISP Hola Mundo")
 
 Listo ya esta preparado para comenzar a aprender LISP
+Si utiliza WSL Debian, debe instalar el paquete rlwrap, para poder utilizar las teclas de flecha y poder
+moverse entre la línea de texto.
+```
+sudo apt install rlwrap
+#Ejecute el interpreter en utilizando rlrwraper
+rlwrap sbcl
+```
