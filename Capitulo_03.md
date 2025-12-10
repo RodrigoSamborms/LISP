@@ -15,5 +15,5 @@ El equivalente en LISP  para el Do Loop es:
 
 ## lista de archivos con código de ejemplo:
 
- [example_02.lisp](.\example_02.lisp)
+ [example_02.lisp](.\examples\example_02.lisp)
  <br>

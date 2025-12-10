@@ -21,25 +21,25 @@ despues del nombre de la función:
 
 
 ## Lista de archivos de código de ejemplo:
- [example_02.lisp](.\example_02.lisp)
+ [example_02.lisp](.\examples\example_02.lisp)
 <br>
- [example_03.lisp](.\example_03.lisp)
+ [example_03.lisp](.\examples\example_03.lisp)
 <br>
- [example_04.lisp](.\example_04.lisp)
+ [example_04.lisp](.\examples\example_04.lisp)
 <br>
- [example_05.lisp](.\example_05.lisp)
+ [example_05.lisp](.\examples\example_05.lisp)
 <br>
  [example_06.lisp](.\example_06.lisp)
 <br>
- [example_07.lisp](.\example_07.lisp)
+ [example_07.lisp](.\examples\example_07.lisp)
 <br>
- [example_08.lisp](.\example_08.lisp)
+ [example_08.lisp](.\examples\example_08.lisp)
 <br>
- [example_09.lisp](.\example_09.lisp)
+ [example_09.lisp](.\examples\example_09.lisp)
 <br>
- [example_10.lisp](.\example_10.lisp)
+ [example_10.lisp](.\examples\example_10.lisp)
 <br>
- [example_11.lisp](.\example_11.lisp)
+ [example_11.lisp](.\examples\example_11.lisp)
 <br>
- [example_12.lisp](.\example_12.lisp)
+ [example_12.lisp](.\examples\example_12.lisp)
 <br>
