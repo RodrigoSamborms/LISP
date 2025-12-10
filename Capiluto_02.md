@@ -30,3 +30,15 @@ despues del nombre de la función:
 [example_05.lisp](.\example_05.lisp)
 <br>
 [example_06.lisp](.\example_06.lisp)
+<br>
+[example_07.lisp](.\example_07.lisp)
+<br>
+[example_08.lisp](.\example_08.lisp)
+<br>
+[example_09.lisp](.\example_09.lisp)
+<br>
+[example_10.lisp](.\example_10.lisp)
+<br>
+[example_11.lisp](.\example_11.lisp)
+<br>
+[example_12.lisp](.\example_12.lisp)
