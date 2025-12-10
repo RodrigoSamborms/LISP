@@ -53,5 +53,4 @@ Tambien podemos definir funciones que trabajan sobre las listas:
 El código anterior lo puede tomar del archivo example_017.lisp
 ## Programas de ejemplo:
 
-<br>
 [example_17.lisp](.\example_17.lisp)
