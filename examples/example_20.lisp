@@ -1,43 +1,17 @@
-(defpackage :com.example
-  (:use :cl))
+;; Ejemplos de uso
+(if-let (x 42)
+    (princ x) (princ "Ir a Nil"))
 
-;;definimos la funcion fuera del paquete que hemos creado anteriormente
-(defun test () "Probando desde dentro del paquete com.example")
-;;ingresamos al a paquete com.example
-(in-package :com.example)
-;;el resultado de la función es error porque la función test no esta definida dentro del paquete com.example
-(test)
-;;para usar una funcion definida fuera del paquete, debemos usar el nombre completo
-(cl-user::test)
+;; Implementaciones
+(defmacro if-let ((x x-val) true-expr false-expr)
+  `(let ((,x ,x-val))
+     (if ,x ,true-expr ,false-expr)))
 
-;;para regresar al paquete principal
-(in-package :cl-user)
+(defmacro if-let (bindig ture-expr false-expr)
+  `(let ,bindig
+     (if ,(first (first bindig)) ,ture-expr ,false-expr)))
 
-
-;;una mejora a lo anterior es exportar la función test al paquete com.example
-(defpackage :com.example
-  (:use :cl)
-  (:export :test))
-;;
-(defpackage :com.example2
-  (:use :cl)
-  (:import-from :com.example :test))
-
-;;La siguiente insturccion es a revisar
-(com.example2::test2)
-;;
-(in-package :com.example2)
-;;
-(defun test2 () (test))
-;;
-(defpackage :com.example2
-  (:use :cl)
-  (:import-from :com.example :test)
-  (:export :test2))
-;;
-(com.example2:test2)
-;;el simbolo # es para marcar funciones que seran excluidas de la exportacion o importacion
-(defpackage :com.example2
-  (:use :cl)
-  (:import-from :com.example #:test)
-  (:export #:test2))
+;;macro definida anteriormente
+(defmacro if-let ((x x-val) true-expr &optional false-expr)
+    `(let ((,x ,x-val))
+        (if ,x , true-expr ,false-expr)))

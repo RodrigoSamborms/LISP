@@ -1,164 +1,73 @@
-# Packages
-Para evitar la colision de nombres, utilizamos los paquetes, los cuales limitan el alcance del espacio de nombres, verificamos el tipo de dato *PACKAGE* :
+# Destructores y más
+Definimos una funcion con tres parametros, mostramos un ejemplo de uso con todos sus parametros funcionara correctamente, si tratamos de utilizar la función con menos parametros de los que pide, recibiremos un error:
 ```
-* *package*
-#<PACKAGE "COMMON-LISP-USER">
-* (type-of *package*)
-PACKAGE
-```
-El paquete CL es el que por defecto usa el intreprete de LISP, podemos verificar que el simbolo T ("usado anteriormente como 't'"), existe dentro del paquete:
-```
-* :cl
-:CL
-* (eql :cl keyword:cl)
-T
-* (eql :cl ':cl)
-T
-```
-También podemos ver definiciones de simbolos dentro del paquete:
-```
-* (describe 'and)
-COMMON-LISP:AND
-  [symbol]
+* (defun foo (a b c) (list a b c))
+FOO
+* (foo 1 2 3)
+(1 2 3)
+* (foo 1 2)
 
-AND names a macro:
-  Lambda-list: (&REST FORMS)
-  Source file: SYS:SRC;CODE;MACROS.LISP
+debugger invoked on a SB-INT:SIMPLE-PROGRAM-ERROR @535D2DC7 in thread
+#<THREAD "main thread" RUNNING {10048C8253}>:
+  invalid number of arguments: 2
+```
+Para evitar este error, podemos indicar que el tercer parametro es opcional:
+```
+* (defun foo (a b &optional c) (list a b c))
+* (foo 1 2)
 
-Symbol-plist:
-  SB-DISASSEM::INSTRUCTIONS -> (#<SB-DISASSEM:INSTRUCTION AND(..
+(1 2 NIL)
 ```
-Podemos cambiar de package usando "in-package":
+Ahora cuando agregamos solo dos parametros, vemos que el tercer parametro se ha llenado con NIL de manera automatica,
+es posible asignar otro valor predeterminado aparte de NIL, como muestra el siguiente ejemplo:
 ```
-* (in-package :cl)
-#<PACKAGE "COMMON-LISP">
-* *package*
-#<PACKAGE "COMMON-LISP">
-```
-Podemos definir un paquete usando "defpackage" y cambiarnos al paquete definido con "in-package" si intentamos utilizar funciones
-que no esten definidas dentro del paquete nos marcara un error (en el ejemplo tratamos de utilizar  "test ()")
+* (defun foo (a b &optional (c 42)) (list a b c))
+* (foo 1 2)
 
+(1 2 42)
 ```
-* (defpackage :com.example
-  (:use :cl))
-#<PACKAGE "COM.EXAMPLE">
-* (in-package :com.example)
-#<PACKAGE "COM.EXAMPLE">
-* (test)
-; in: TEST
-;     (COM.EXAMPLE::TEST)
+Podemos apreciar que ahora el valor por defecto es 42 en lugar de NIL, es posible asignar el resto de parametros como una
+lista también:
+```
+* (defun foo (a &rest params) (list a params))
+* (foo 1 2 3)
+
+(1 (2 3))
+```
+Es posible utilizar la notación de pares (Clave : Valor), lo cual nos ayuda a dar más flexibilidad a la asignación de valores a elementos especificos.
+```
+* (defun foo (&key a b c) (list a b c))
+* (foo :c 3)
+
+(NIL NIL 3)
+```
+Podemos combinar la asignación (Clave : Valor) con parametros con valores predefinidos
+```
+* (defun foo (&key (a 42) b c) (list a b c))
+* (foo :c 3)
+
+(42 NIL 3)
+```
+Si queremos aplicar los mismos conceptos a las macros, encontraremos problemas, ya que las macros a diferencia de las funciones
+se expanden en el código y no pueden quedar sin referencias.
+```
+* (defmacro if-let ((x x-val) true-expr &optional false-expr)
+    `(let ((,x ,x-val))
+        (if ,x , true-expr ,false-expr)))
+* (if-let x x)
+; in: FOO 1
+;     (IF-LET X X)
 ;
-; caught STYLE-WARNING:
-;   undefined function: COM.EXAMPLE::TEST
+; caught ERROR:
+;   during macroexpansion of (IF-LET X X). Use *BREAK-ON-SIGNALS* to intercept.
+;
+;    Error while parsing arguments to DEFMACRO IF-LET:
+;      invalid number of elements in
+;        X
+;      to satisfy lambda list
+;        (X X-VAL):
+;      exactly 2 expected, but got a non-list
 ```
-
-```
-* *package*
-#<PACKAGE "COMMON-LISP-USER">
-* (defpackage :com.example (:use :cl))
-#<PACKAGE "COM.EXAMPLE">
-* (defun test () "Probando desde dentro del paquete com.example")
-TEST
-* (in-package :com.example)
-#<PACKAGE "COM.EXAMPLE">
-* *package*
-#<PACKAGE "COM.EXAMPLE">
-* (cl-user::test)
-"Probando desde dentro del paquete com.example"
-* (in-package :cl-user)
-#<PACKAGE "COMMON-LISP-USER">
-```
-El siguiente ejemplo utiliza los conceptos anteriores:
-```
-* ;;verificamos en que paquete estamos
-*package*
-#<PACKAGE "COMMON-LISP-USER">
-* ;;definimos un paquete para usar
-(defpackage :com.example (:use :cl))
-#<PACKAGE "COM.EXAMPLE">
-* ;;definimos una funcion en el paquete actual ("COMMON-LISP-USER")
-(defun test () "Probando desde dentro del paquete com.example")
-TEST
-* ;;ingresamos al paquete creado con anterioridad 
-(in-package :com.example)
-#<PACKAGE "COM.EXAMPLE">
-* ;;verificamos el paquete en el que estamos
-*package*
-#<PACKAGE "COM.EXAMPLE">
-* ;;llamamos a la función que definimos fuera del paquete antes
-(cl-user::test)
-"Probando desde dentro del paquete com.example"
-* ;;Regresamos al paquete anterior
-(in-package :cl-user)
-#<PACKAGE "COMMON-LISP-USER">
-*
-```
-Puede encontrar el código anterior en el archivo de ejemplo numero 20.
-
-
-```
-* :cl
-:CL
-* (describe 'cl)
-COMMON-LISP-USER::CL
-  [symbol]
-* (in-package :cl)
-#<PACKAGE "COMMON-LISP">
-* *package*
-#<PACKAGE "COMMON-LISP">
-* (defpackage :com.example
-        (:use :cl))
-#<PACKAGE "COM.EXAMPLE">
-* (in-package :com.example)
-#<PACKAGE "COM.EXAMPLE">
-* *package*
-#<PACKAGE "COM.EXAMPLE">
-* (defun test () "Prueba dentro del paquete de ejemplo")
-TEST
-* (in-package :cl)
-#<PACKAGE "COMMON-LISP">
-* *package*
-#<PACKAGE "COMMON-LISP">
-* (com.example::test)
-"Prueba dentro del paquete de ejemplo"
-* (defpackage :com.example
-        (:use :cl)
-        (:export :test))
-#<PACKAGE "COM.EXAMPLE">
-* *package*
-#<PACKAGE "COMMON-LISP">
-* (com.example:test)
-"Prueba dentro del paquete de ejemplo"
-* (in-package :com.example)
-#<PACKAGE "COM.EXAMPLE">
-* (in-package :cl)
-#<PACKAGE "COMMON-LISP">
-* (defpackage :com.example2 (:use cl) (:import-from :com.example :test))
-#<PACKAGE "COM.EXAMPLE2">
-* (in-package :com.example2)
-#<PACKAGE "COM.EXAMPLE2">
-* (defun test2 () (test))
-TEST2
-* (in-package :cl)
-#<PACKAGE "COMMON-LISP">
-* (com.example2::test2)
-"Prueba dentro del paquete de ejemplo"
-*package*
-#<PACKAGE "COMMON-LISP">
-* (defpackage :com.example2 (:use cl) (:import-from :com.example :test) (:export :test2))
-#<PACKAGE "COM.EXAMPLE2">
-* (com.example2:test2)
-"Prueba dentro del paquete de ejemplo"
-;;la siguiente instruccion evita que se importen todos los simbolos al paquete, solo las referencias quedan
-* (defpackage :com.example2 (:use cl) (:import-from :com.example #:test) (:export #:test2))
-#<PACKAGE "COM.EXAMPLE2">
-* (com.example2:test2)
-"Prueba dentro del paquete de ejemplo"
-;importar todos los simbolos puede crear duplicados y la función test no es utilizara demasiado por lo que
-;se marca con # si se requiren los simbolos se tomaran del paquete original lo cual genera una carga adicional
-```
-Como nota adicional el uso de ":use paquete_simbolos" solo se reserva para librerias comunes, no para las propias
 ## Código de Ejemplo:
 
-[example_20.lisp](./examples/example_20.lisp)
-<br>
+[example_19.lisp](./examples/example_19.lisp)
